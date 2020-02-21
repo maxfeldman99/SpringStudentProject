@@ -3,6 +3,7 @@ import Container from './Container';
 import Footer from './Footer';
 import './App.css';
 import { getAllStudents } from './client'; // we want to import our function
+import AddStudentForm from './forms/AddStudentForm';
 import { render } from '@testing-library/react';
 import {
   Table,
@@ -113,7 +114,7 @@ class App extends Component {
               onOk={this.closeAddStudentModal}
               onCancel={this.closeAddStudentModal}
               width={1000}>
-              <h1>Hello Modal with Antd</h1>
+              <AddStudentForm/>
 
               </Modal>
               <Footer
