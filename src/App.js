@@ -5,6 +5,7 @@ import './App.css';
 import { getAllStudents } from './client'; // we want to import our function
 import AddStudentForm from './forms/AddStudentForm';
 import { render } from '@testing-library/react';
+import { ErrorNotification, errorNotification } from './Notification';
 import {
   Table,
   Avatar,
@@ -41,7 +42,16 @@ class App extends Component {
         isFetching: false //in order to turn off spiner
       });
 
-    }));
+    }))
+    .catch(error => {
+      console.log(error.error);
+      const message  = error.error.message
+      const description = error.error.error
+      errorNotification(message,description);
+      this.setState({
+        isFetching: false
+      });
+    });
   
   }
 
@@ -104,6 +114,7 @@ class App extends Component {
       return (
         <Container>
           <Table
+              style={{marginBottom: '100px'}}
               dataSource={students}
               columns={columns}
               pagination={false} // to remove the next button inside table
@@ -114,7 +125,12 @@ class App extends Component {
               onOk={this.closeAddStudentModal}
               onCancel={this.closeAddStudentModal}
               width={1000}>
-              <AddStudentForm/>
+              <AddStudentForm
+                onSuccess={() => {
+                  this.closeAddStudentModal();
+                  this.fetchStudents();
+                }}
+              />
 
               </Modal>
               <Footer
