@@ -3,10 +3,11 @@ import Container from './Container';
 import { Button, Avatar } from 'antd';
 import './Footer.css';
 
+// if its undefind make the avatar null , else we also consider 0 to be valid
 const Footer = (props) =>(
     <div className='footer'>
        <Container>
-            {props.numberOfStudents ?
+            {props.numberOfStudents !== undefined ?
              <Avatar
                     style={{ color: '#ffffff', backgroundColor: '#87d068' , marginRight: '5px'}} 
                     size='large'>{props.numberOfStudents}</Avatar> :null

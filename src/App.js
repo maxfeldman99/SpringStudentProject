@@ -11,7 +11,8 @@ import {
   Avatar,
   Spin,
   Icon,
-  Modal
+  Modal,
+  Empty
 } from 'antd';
 class App extends Component {
 
@@ -60,6 +61,27 @@ class App extends Component {
     const getIndicatorIcon =() => <Icon type="loading" style={{ fontSize: 24 }} spin />;
 
     const { students,isFetching ,isAddStudentModalVisible} = this.state;
+
+    const commonElements = () => (
+      <div>
+         <Modal
+            title='Add new student'
+            visible={this.state.isAddStudentModalVisible}
+            onOk={this.closeAddStudentModal}
+            onCancel={this.closeAddStudentModal}
+            width={1000}>
+            <AddStudentForm
+              onSuccess={() => {
+                this.closeAddStudentModal();
+                this.fetchStudents();
+              }}
+            />
+            </Modal>
+            <Footer
+             numberOfStudents={students.length}
+             handleAddStudentClickEvent={this.openAddStudentModal}/>
+      </div>
+    )
 
     if (isFetching){
       return (
@@ -119,29 +141,20 @@ class App extends Component {
               columns={columns}
               pagination={false} // to remove the next button inside table
               rowKey='studentId'/>
-              <Modal
-              title='Add new student'
-              visible={this.state.isAddStudentModalVisible}
-              onOk={this.closeAddStudentModal}
-              onCancel={this.closeAddStudentModal}
-              width={1000}>
-              <AddStudentForm
-                onSuccess={() => {
-                  this.closeAddStudentModal();
-                  this.fetchStudents();
-                }}
-              />
-
-              </Modal>
-              <Footer
-               numberOfStudents={students.length}
-               handleAddStudentClickEvent={this.openAddStudentModal}/>
+              {commonElements()}
         </Container>
       );
 
   }
     
-  return <h1>No Students Found</h1>
+  return(
+    <Container>
+     <Empty description={
+      <h1>No Students Found</h1>
+    }/>
+    {commonElements()}
+    </Container>
+  )
   }
 }
 
